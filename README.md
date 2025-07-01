@@ -23,6 +23,13 @@ It loads, splits, embeds, and stores your documents using `nomic-embed-text`, an
 - Sufficient RAM/CPU (LLaMA 3 is resource-intensive)
 
 ---
+---
+
+## 📝 TODO
+- [ ] Integrate advanced Ollama tooling  
+  👉 [Ollama Tooling Blog](https://ollama.com/blog/tool-support)
+- [ ] Export chat history with source references
+
 
 ## 🦙 Installing Ollama
 
