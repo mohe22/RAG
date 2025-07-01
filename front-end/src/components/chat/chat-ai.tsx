@@ -7,6 +7,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import materialDark from "react-syntax-highlighter/dist/esm/styles/prism/material-dark";
 import remarkGfm from "remark-gfm";
 
+
 interface ChatAIProps {
   message: string;
   isStreaming: boolean;
@@ -30,7 +31,7 @@ function ChatAI({ message, isStreaming, resources, timestamp }: ChatAIProps) {
   };
 
   return (
-    <div className="prose prose-invert max-w-none overflow-x-scroll text-white cursor-pointer relative group">
+    <div className=" overflow-x-scroll relative group">
       {message ? (
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
@@ -45,6 +46,7 @@ function ChatAI({ message, isStreaming, resources, timestamp }: ChatAIProps) {
                     style={materialDark}
                     PreTag="div"
                     showLineNumbers
+                    
                     {...props}
                   >
                     {String(children).replace(/\n$/, "")}
@@ -61,7 +63,7 @@ function ChatAI({ message, isStreaming, resources, timestamp }: ChatAIProps) {
                   </Button>
                 </div>
               ) : (
-                <code className=" rounded px-1.5 py-0.5 text-sm font-mono">
+                <code className="  bg-accent relative  px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold">
                   {children}
                 </code>
               );
@@ -92,7 +94,7 @@ function ChatAI({ message, isStreaming, resources, timestamp }: ChatAIProps) {
             },
             blockquote({ children }) {
               return (
-                <blockquote className="border-l-4 border-blue-500 pl-4 italic  py-2 rounded-r-lg my-1">
+                <blockquote className="mt-6 border-l-2 pl-6 italic">
                   {children}
                 </blockquote>
               );
@@ -110,11 +112,11 @@ function ChatAI({ message, isStreaming, resources, timestamp }: ChatAIProps) {
               );
             },
             p({ children }) {
-              return <p className="my-1 leading-relaxed">{children}</p>;
+              return <p className=" leading-relaxed">{children}</p>;
             },
             ul({ children }) {
               return (
-                <ul className="list-disc pl-6  ">{children}</ul>
+                <ul className=" ml-5 list-disc  ">{children}</ul>
               );
             },
             ol({ children }) {

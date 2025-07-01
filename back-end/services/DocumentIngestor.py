@@ -12,7 +12,8 @@ from langchain_community.document_loaders import (
     JSONLoader,
     TextLoader,
 )
-from langchain_unstructured import UnstructuredLoader
+from langchain_community.document_loaders import WebBaseLoader
+
 
 # db
 from utility.db import  get_chroma_client
@@ -34,10 +35,13 @@ class DocumentIngestor:
 
     def _load_data(self):
         is_url = self.extension == "url"
+        
         if is_url:
-            # Load webpage or online content using UnstructuredLoader
-            loader = UnstructuredLoader(web_url=self.source)
-            self.raw_docs = loader.load()
+            try:
+                loader = WebBaseLoader(self.source)
+                self.raw_docs = loader.load()
+            except Exception as e:
+                raise ValueError(f"Failed to load from URL: {self.source}. Error: {e}")
         else:
             # Load local files based on extension
             if self.extension == "pdf":

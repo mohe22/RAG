@@ -15,12 +15,14 @@ class ASK:
         self.llm = OllamaLLM(model=MODEL, temperature=0.3, top_k=50)
         self.embedder = get_embedder()
         self.prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-
+        self.col = self.client.get_collection(collection_name)
+        self.document_type = self.col.metadata.get("type", "unknown")
         self.collection = Chroma(
             client=self.client,
             collection_name=collection_name,
             embedding_function=self.embedder,
         )
+
 
     def format_history(self, history: list[dict]) -> str:
         """Formats the chat history into a string for the prompt."""
@@ -34,7 +36,8 @@ class ASK:
         return "\n".join(formatted)
 
     def ask(self, question: str, history: list[dict] = None):
-        results = self.collection.similarity_search_with_score(question, k=5)
+
+        results = self.collection.similarity_search_with_score(question, k=self.get_top_k())
         context = "\n\n---\n\n".join([doc.page_content for doc, _ in results])
         formatted_history = self.format_history(history)
 
@@ -44,9 +47,19 @@ class ASK:
         response = self.llm.invoke(prompt)
         sources = [doc.metadata.get("id") for doc, _ in results]
         return response, sources
-
+    def get_top_k(self):
+        if self.document_type == "pdf":
+            return 20
+        elif self.document_type in ["txt", "md"]:
+            return 15
+        elif self.document_type == "url":
+          return 7
+        else:
+            return 5
     def stream_ask(self, question: str, history: list[dict] = None):
-        results = self.collection.similarity_search_with_score(question, k=5)
+
+
+        results = self.collection.similarity_search_with_score(question, k=self.get_top_k())
         context = "\n\n---\n\n".join([doc.page_content for doc, _ in results])
         formatted_history = self.format_history(history)
 

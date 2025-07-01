@@ -59,6 +59,13 @@ export default function ActionButton({
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && onUrlSubmit && url.trim()) {
+              onUrlSubmit(url.trim());
+              setUrl("");
+              setShowInput(false);
+            }
+          }}
           placeholder="Enter URL"
           className="px-4 py-2 text-sm rounded-full border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 outline-none transition-all duration-200 hover:shadow-sm"
         />

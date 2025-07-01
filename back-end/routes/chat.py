@@ -70,7 +70,7 @@ def list_all_chats():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-
+import traceback
 @router.post("/new-chat/")
 def create_chat_group(data: ChatGroupCreateRequest):
     try:
@@ -85,4 +85,5 @@ def create_chat_group(data: ChatGroupCreateRequest):
         print(f)
         raise
     except Exception as e:
+        traceback.print_exc()  
         raise HTTPException(status_code=500, detail=str(e))
